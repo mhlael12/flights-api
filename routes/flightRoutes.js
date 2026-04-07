@@ -1,8 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const flightController = require('../controllers/flightController');
+const { 
+    getAllFlights, 
+    addFlight, 
+    searchFlights, 
+    updateFlight, 
+    deleteFlight 
+} = require('../controllers/flightController');
 
-router.get('/', flightController.getAllFlights);
-router.post('/add', flightController.addFlight);
-router.get('/search', flightController.searchFlights);
+// الروابط التي لا تحتاج معرف (ID)
+router.route('/')
+    .get(getAllFlights)
+    .post(addFlight);
+
+// رابط البحث
+router.get('/search', searchFlights);
+
+// الروابط التي تحتاج معرف (ID)
+router.route('/:id')
+    .put(updateFlight)
+    .delete(deleteFlight);
+
 module.exports = router;
