@@ -7,11 +7,11 @@ const {
     updateFlight, 
     deleteFlight 
 } = require('../controllers/flightController');
-
+const { validateFlight } = require('../middleware/validateFlight');
 // الروابط التي لا تحتاج معرف (ID)
 router.route('/')
     .get(getAllFlights)
-    .post(addFlight);
+    .post(validateFlight,addFlight);
 
 // رابط البحث
 router.get('/search', searchFlights);
