@@ -19,7 +19,12 @@ const BookingSchema = new mongoose.Schema({
     bookingDate: {
         type: Date,
         default: Date.now
-    }
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'confirmed', 'cancelled'],
+        default: 'confirmed' // بما أننا لم نربط الدفع بعد، سنجعله مؤكداً تلقائياً
+    },
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);
