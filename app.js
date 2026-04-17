@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const errorHandler = require('./middleware/error'); // استيراد محطة معالجة الأخطاء
 const bookingRoutes = require('./routes/bookingRoutes');
 const app = express();
+const ErrorResponse = require('./utils/errorResponse');
 
 // 1. الاتصال بقاعدة البيانات
 connectDB();
@@ -15,9 +16,9 @@ app.use(helmet());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false })); 
 // 3. تعريف المسارات (Routes)
-app.use('/api/flights', flightRoutes);
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/bookings', bookingRoutes);
+app.use('/api/v1/flights', flightRoutes); // يفضل إضافة v1 للرابط كما في Postman
+app.use('/api/v1/auth', require('./routes/authRoutes'));
+app.use('/api/v1/bookings', bookingRoutes);
 
 // 4. تحويل المسارات غير الموجودة إلى خطأ 404 ليتم معالجته مركزياً
 app.use((req, res, next) => {

@@ -1,14 +1,25 @@
 const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
+    // تم إزالة required: true لجعل الحقل اختيارياً (للحجوزات المحلية فقط)
     flight: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Flight', // ربط مع موديل الرحلات
-        required: true
+        ref: 'Flight',
+        required: false 
+    },
+    // حقل جديد لتخزين رقم الطلب القادم من Duffel (للحجوزات الدولية)
+    duffelOrderId: {
+        type: String,
+        required: false
+    },
+    // حقل لتخزين رقم الحجز الرسمي الذي يعطيه Duffel (Booking Reference)
+    bookingReference: {
+        type: String,
+        required: false
     },
     user: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User', // ربط مع موديل المستخدمين
+        ref: 'User',
         required: true
     },
     seatsBooked: {
@@ -23,7 +34,7 @@ const BookingSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['pending', 'confirmed', 'cancelled'],
-        default: 'confirmed' // بما أننا لم نربط الدفع بعد، سنجعله مؤكداً تلقائياً
+        default: 'confirmed'
     },
 });
 

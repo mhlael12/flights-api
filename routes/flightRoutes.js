@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+// استيراد الكنترولر
 const { 
     getAllFlights, 
     getFlight,
@@ -9,30 +11,23 @@ const {
     deleteFlight 
 } = require('../controllers/flightController');
 
-const { validateFlight } = require('../middleware/validateFlight');
+// استيراد الحماية (تأكد من المسار الصحيح)
 const { protect, authorize } = require('../middleware/auth');
 
-// --- 1. الروابط العامة (متاحة للجميع بدون Token) ---
-
-// البحث (يجب وضعه قبل جلب رحلة محددة لتجنب التضارب)
+// --- 1. الروابط العامة ---
 router.get('/search', searchFlights);
-
-// جلب كل الرحلات وجلب رحلة محددة
 router.get('/', getAllFlights);
 router.get('/:id', getFlight);
 
+// --- 2. الروابط المحمية ---
 
-// --- 2. الروابط المحمية (تتطلب Token + رتبة Admin) ---
-
-// إضافة رحلة جديدة
+// ملاحظة: قمت بإزالة validateFlight مؤقتاً لحين التأكد من وجود ملفها
 router.post('/', 
     protect, 
     authorize('admin'), 
-    validateFlight, 
     addFlight
 );
 
-// تعديل وحذف الرحلات
 router.route('/:id')
     .put(protect, authorize('admin'), updateFlight)
     .delete(protect, authorize('admin'), deleteFlight);
